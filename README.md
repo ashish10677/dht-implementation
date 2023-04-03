@@ -1,10 +1,10 @@
-# DHT Project
+# Kademlia DHT Implementation 
 
 ## Objectives
 - Create a libp2p node.
 - Advertise your rendezvous
-- Find and connect to `o` peers. 
-- Wait and do not proceed till connected to all `o` peers.
+- Find and connect to `n` peers. 
+- Wait and do not proceed till connected to all `n` peers.
 
 ## How to run
 Build the project using 
