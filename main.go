@@ -26,7 +26,7 @@ func CreateNode() (host.Host, error) {
 	fmt.Printf("Node id: %s\n", node.ID().String())
 	fmt.Println("Connect on: ")
 	for _, addr := range node.Addrs() {
-		log.Printf("  %s/p2p/%s", addr, node.ID().String())
+		fmt.Printf("  %s/p2p/%s", addr, node.ID().String())
 	}
 	return node, nil
 }
@@ -46,9 +46,9 @@ func Announce(ctx context.Context, node host.Host, bootstrapPeers []multiaddr.Mu
 		go func() {
 			defer wg.Done()
 			if err := node.Connect(ctx, *peerInfo); err != nil {
-				log.Printf("Error while connecting to node %q: %-v", peerInfo, err)
+				fmt.Printf("Error while connecting to node %q: %-v\n", peerInfo, err)
 			} else {
-				log.Printf("Connection established with bootstrap node: %q", *peerInfo)
+				fmt.Printf("Connection established with bootstrap node: %q\n", *peerInfo)
 			}
 		}()
 	}
