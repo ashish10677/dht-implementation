@@ -37,7 +37,7 @@ Connect on:
 In the next 3 new terminals run
 
 ```
-$ ./dht --peer /ip4/192.168.1.20/tcp/58476/p2p/12D3KooWCEsQ9vbkBCgR7gwF1xcqZiNrNkhA57EjUuho48MiypaT
+$ ./dht --peer /ip4/192.168.1.20/tcp/58476/p2p/12D3KooWCEsQ9vbkBCgR7gwF1xcqZiNrNkhA57EjUuho48MiypaT --port <port> --externalIp <your_public_ipAddress>
 ```
 
 You'll see all the nodes are connected to each other.
