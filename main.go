@@ -24,7 +24,7 @@ func CreateNode(externalIp string, port string) (host.Host, error) {
 	fmt.Printf("Node id: %s\n", node.ID().String())
 	fmt.Println("Connect on: ")
 	for _, addr := range node.Addrs() {
-		fmt.Printf("  %s/p2p/%s", addr, node.ID().String())
+		fmt.Printf("  %s/p2p/%s\n", addr, node.ID().String())
 	}
 	return node, nil
 }
