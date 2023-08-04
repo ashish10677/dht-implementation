@@ -72,7 +72,7 @@ func main() {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
-		time.Sleep(120 * time.Second)
+		time.Sleep(600 * time.Second)
 		fmt.Println("Cancelling context now!")
 		cancel()
 	}()
