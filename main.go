@@ -63,7 +63,7 @@ func main() {
 	flag.Var(&discoveryPeers, "peer", "Peer multi address for peer discovery")
 	flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
 	flag.StringVar(&port, "port", "", "Port of user")
-	flag.StringVar(&port, "mode", "", "server/client mode")
+	flag.StringVar(&mode, "mode", "", "server/client mode")
 	flag.Parse()
 
 	node, err := CreateNode(externalIp, port)
