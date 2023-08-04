@@ -57,7 +57,7 @@ func main() {
 	var externalIp string
 	var port string
 	flag.Var(&discoveryPeers, "peer", "Peer multi address for peer discovery")
-	//flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
+	flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
 	flag.StringVar(&port, "port", "", "Port of user")
 	flag.Parse()
 
