@@ -14,8 +14,8 @@ import (
 	"time"
 )
 
-func Announce(ctx context.Context, node host.Host, bootstrapPeers []multiaddr.Multiaddr) (*routing.RoutingDiscovery, error) {
-	kademliaDHT, err := dht.New(ctx, node, dht.Mode(dht.ModeServer))
+func Announce(ctx context.Context, mode dht.ModeOpt, node host.Host, bootstrapPeers []multiaddr.Multiaddr) (*routing.RoutingDiscovery, error) {
+	kademliaDHT, err := dht.New(ctx, node, dht.Mode(mode))
 	if err != nil {
 		return nil, fmt.Errorf("fail to create DHT: %w", err)
 	}

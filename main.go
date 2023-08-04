@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/libp2p/go-libp2p"
+	dht "github.com/libp2p/go-libp2p-kad-dht"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/multiformats/go-multiaddr"
 	"time"
@@ -53,12 +54,16 @@ func getAddressFactory(externalIP string, port string) (func([]multiaddr.Multiad
 }
 
 func main() {
-	var discoveryPeers addrList
-	var externalIp string
-	var port string
+	var (
+		discoveryPeers addrList
+		externalIp     string
+		port           string
+		mode           string
+	)
 	flag.Var(&discoveryPeers, "peer", "Peer multi address for peer discovery")
 	flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
 	flag.StringVar(&port, "port", "", "Port of user")
+	flag.StringVar(&port, "mode", "", "server/client mode")
 	flag.Parse()
 
 	node, err := CreateNode(externalIp, port)
@@ -71,7 +76,11 @@ func main() {
 		fmt.Println("Cancelling context now!")
 		cancel()
 	}()
-	routingDiscovery, err := Announce(ctx, node, discoveryPeers)
+	modeOpt := dht.ModeClient
+	if mode == "server" {
+		modeOpt = dht.ModeServer
+	}
+	routingDiscovery, err := Announce(ctx, modeOpt, node, discoveryPeers)
 	if err != nil {
 		panic(err)
 	}
