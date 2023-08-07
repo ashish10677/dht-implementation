@@ -78,6 +78,7 @@ func main() {
 	}()
 	modeOpt := dht.ModeClient
 	if mode == "server" {
+		fmt.Println("Running this node in server mode!")
 		modeOpt = dht.ModeServer
 	}
 	routingDiscovery, err := Announce(ctx, modeOpt, node, discoveryPeers)
