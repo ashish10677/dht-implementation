@@ -2,5 +2,5 @@ package main
 
 const (
 	TotalNumberOfPeers = 4
-	Rendezvous         = "razor-test"
+	Rendezvous         = "razor-test-001"
 )
