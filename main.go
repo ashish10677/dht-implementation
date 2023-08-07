@@ -17,9 +17,12 @@ func CreateNode(externalIp string, port string) (host.Host, error) {
 	//	return nil, err
 	//}
 	node, err := libp2p.New(
-		libp2p.ListenAddrStrings(fmt.Sprintf("%s%s", "/ip4/0.0.0.0/tcp/", port)),
+		libp2p.ListenAddrStrings(fmt.Sprintf("/ip4/0.0.0.0/tcp/%s", port)),
+		libp2p.DefaultTransports,
+		libp2p.DefaultMuxers,
+		libp2p.DefaultSecurity,
+		libp2p.NATPortMap(),
 	)
-	//libp2p.AddrsFactory(addressFactory))
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +85,7 @@ func main() {
 		fmt.Println("Running this node in server mode!")
 		modeOpt = dht.ModeServer
 	}
-	routingDiscovery, err := Announce(ctx, modeOpt, node, discoveryPeers)
+	routingDiscovery, err := Announce(ctx, modeOpt, node, dht.DefaultBootstrapPeers)
 	if err != nil {
 		panic(err)
 	}
