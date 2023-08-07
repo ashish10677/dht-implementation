@@ -34,12 +34,13 @@ func Discover(ctx context.Context, node host.Host, routingDiscovery *routing.Rou
 				if node.Network().Connectedness(p.ID) != network.Connected {
 					_, err = node.Network().DialPeer(ctx, p.ID)
 					if err != nil {
-						fmt.Println("Error:", err)
+						//fmt.Println("Error:", err)
 						continue
 					}
+					fmt.Println("Connected to:", p.ID)
 				}
 			}
-			fmt.Printf("Connected to %d peers\n", len(node.Network().Peers()))
+			//fmt.Printf("Connected to %d peers\n", len(node.Network().Peers()))
 
 			if len(node.Network().Peers()) == TotalNumberOfPeers-1 {
 				fmt.Println("Connected to all peers")
