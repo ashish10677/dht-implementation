@@ -12,13 +12,14 @@ import (
 )
 
 func CreateNode(externalIp string, port string) (host.Host, error) {
-	addressFactory, err := getAddressFactory(externalIp, port)
-	if err != nil {
-		return nil, err
-	}
+	//addressFactory, err := getAddressFactory(externalIp, port)
+	//if err != nil {
+	//	return nil, err
+	//}
 	node, err := libp2p.New(
 		libp2p.ListenAddrStrings(fmt.Sprintf("%s%s", "/ip4/0.0.0.0/tcp/", port)),
-		libp2p.AddrsFactory(addressFactory))
+	)
+	//libp2p.AddrsFactory(addressFactory))
 	if err != nil {
 		return nil, err
 	}
