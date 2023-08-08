@@ -46,6 +46,7 @@ func CreateNode(port string) (host.Host, error) {
 			autorelay.WithMinInterval(0),
 		),
 		libp2p.EnableHolePunching(),
+		libp2p.EnableRelay(),
 	)
 	if err != nil {
 		return nil, err
