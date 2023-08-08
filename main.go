@@ -7,15 +7,10 @@ import (
 	"github.com/libp2p/go-libp2p"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
 	"github.com/libp2p/go-libp2p/core/host"
-	"github.com/multiformats/go-multiaddr"
 	"time"
 )
 
-func CreateNode(externalIp string, port string) (host.Host, error) {
-	//addressFactory, err := getAddressFactory(externalIp, port)
-	//if err != nil {
-	//	return nil, err
-	//}
+func CreateNode(port string) (host.Host, error) {
 	node, err := libp2p.New(
 		libp2p.ListenAddrStrings(fmt.Sprintf("/ip4/0.0.0.0/tcp/%s", port)),
 		libp2p.DefaultTransports,
@@ -34,45 +29,20 @@ func CreateNode(externalIp string, port string) (host.Host, error) {
 	return node, nil
 }
 
-func getAddressFactory(externalIP string, port string) (func([]multiaddr.Multiaddr) []multiaddr.Multiaddr, error) {
-	var (
-		externalAddr multiaddr.Multiaddr
-		err          error
-	)
-
-	// binding external IP to libp2p node
-	if len(externalIP) != 0 {
-		externalAddr, err = multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%s", externalIP, port))
-		if err != nil {
-			return nil, fmt.Errorf("fail to create listen with given external IP: %v", err)
-		}
-		fmt.Printf("Binding to external IP: %v", externalAddr.String())
-	}
-	addressFactory := func(addrs []multiaddr.Multiaddr) []multiaddr.Multiaddr {
-		if externalAddr != nil {
-			return []multiaddr.Multiaddr{externalAddr}
-		}
-		return addrs
-	}
-	return addressFactory, nil
-}
-
 func main() {
 	var (
 		discoveryPeers addrList
-		externalIp     string
 		port           string
 		mode           string
 		rendezvous     string
 	)
 	flag.Var(&discoveryPeers, "peer", "Peer multi address for peer discovery")
-	flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
 	flag.StringVar(&port, "port", "", "Port of user")
 	flag.StringVar(&mode, "mode", "", "server/client mode")
 	flag.StringVar(&rendezvous, "rendezvous", "", "rendezvous point")
 	flag.Parse()
 
-	node, err := CreateNode(externalIp, port)
+	node, err := CreateNode(port)
 	if err != nil {
 		panic(err)
 	}
