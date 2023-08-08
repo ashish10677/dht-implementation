@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func Discover(ctx context.Context, node host.Host, routingDiscovery *routing.RoutingDiscovery) {
+func Discover(ctx context.Context, node host.Host, rendezvous string, routingDiscovery *routing.RoutingDiscovery) {
 	ticker := time.NewTicker(time.Second * 5)
 	defer ticker.Stop()
 
@@ -20,7 +20,7 @@ func Discover(ctx context.Context, node host.Host, routingDiscovery *routing.Rou
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			peers, err := discoveryUtil.FindPeers(ctx, routingDiscovery, Rendezvous)
+			peers, err := discoveryUtil.FindPeers(ctx, routingDiscovery, rendezvous)
 			if err != nil {
 				log.Fatal(err)
 			}

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func Announce(ctx context.Context, mode dht.ModeOpt, node host.Host, bootstrapPeers []multiaddr.Multiaddr) (*routing.RoutingDiscovery, error) {
+func Announce(ctx context.Context, mode dht.ModeOpt, node host.Host, rendezvous string, bootstrapPeers []multiaddr.Multiaddr) (*routing.RoutingDiscovery, error) {
 	kademliaDHT, err := dht.New(ctx, node, dht.Mode(mode))
 	if err != nil {
 		return nil, fmt.Errorf("fail to create DHT: %w", err)
@@ -37,7 +37,7 @@ func Announce(ctx context.Context, mode dht.ModeOpt, node host.Host, bootstrapPe
 	}
 	wg.Wait()
 	routingDiscovery := routing.NewRoutingDiscovery(kademliaDHT)
-	fmt.Println("Announcing rendezvous as: ", Rendezvous)
-	discoveryUtil.Advertise(ctx, routingDiscovery, Rendezvous, discovery.TTL(5*time.Second))
+	fmt.Println("Announcing rendezvous as: ", rendezvous)
+	discoveryUtil.Advertise(ctx, routingDiscovery, rendezvous, discovery.TTL(5*time.Second))
 	return routingDiscovery, nil
 }

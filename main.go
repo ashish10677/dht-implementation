@@ -63,11 +63,13 @@ func main() {
 		externalIp     string
 		port           string
 		mode           string
+		rendezvous     string
 	)
 	flag.Var(&discoveryPeers, "peer", "Peer multi address for peer discovery")
 	flag.StringVar(&externalIp, "externalIp", "", "Public IP address of user")
 	flag.StringVar(&port, "port", "", "Port of user")
 	flag.StringVar(&mode, "mode", "", "server/client mode")
+	flag.StringVar(&rendezvous, "rendezvous", "", "rendezvous point")
 	flag.Parse()
 
 	node, err := CreateNode(externalIp, port)
@@ -85,11 +87,11 @@ func main() {
 		fmt.Println("Running this node in server mode!")
 		modeOpt = dht.ModeServer
 	}
-	routingDiscovery, err := Announce(ctx, modeOpt, node, dht.DefaultBootstrapPeers)
+	routingDiscovery, err := Announce(ctx, modeOpt, node, rendezvous, dht.DefaultBootstrapPeers)
 	if err != nil {
 		panic(err)
 	}
-	Discover(ctx, node, routingDiscovery)
+	Discover(ctx, node, rendezvous, routingDiscovery)
 	select {
 	case <-ctx.Done():
 		fmt.Println("Context cancelled!")
