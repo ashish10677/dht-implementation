@@ -7,16 +7,45 @@ import (
 	"github.com/libp2p/go-libp2p"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
 	"github.com/libp2p/go-libp2p/core/host"
+	"github.com/libp2p/go-libp2p/core/peer"
+	"github.com/libp2p/go-libp2p/p2p/host/autorelay"
 	"time"
 )
 
 func CreateNode(port string) (host.Host, error) {
+	peerChan := make(chan peer.AddrInfo)
 	node, err := libp2p.New(
 		libp2p.ListenAddrStrings(fmt.Sprintf("/ip4/0.0.0.0/tcp/%s", port)),
 		libp2p.DefaultTransports,
 		libp2p.DefaultMuxers,
 		libp2p.DefaultSecurity,
 		libp2p.NATPortMap(),
+		libp2p.EnableAutoRelayWithPeerSource(
+			func(ctx context.Context, numPeers int) <-chan peer.AddrInfo {
+				r := make(chan peer.AddrInfo)
+				go func() {
+					defer close(r)
+					for ; numPeers != 0; numPeers-- {
+						select {
+						case v, ok := <-peerChan:
+							if !ok {
+								return
+							}
+							select {
+							case r <- v:
+							case <-ctx.Done():
+								return
+							}
+						case <-ctx.Done():
+							return
+						}
+					}
+				}()
+				return r
+			},
+			autorelay.WithMinInterval(0),
+		),
+		libp2p.EnableHolePunching(),
 	)
 	if err != nil {
 		return nil, err
