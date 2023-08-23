@@ -18,7 +18,6 @@ func CreateNode(port string) (host.Host, error) {
 		libp2p.DefaultMuxers,
 		libp2p.DefaultSecurity,
 		libp2p.NATPortMap(),
-		libp2p.EnableAutoRelay(),
 		libp2p.EnableHolePunching(),
 	)
 	if err != nil {
